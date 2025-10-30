@@ -1,5 +1,6 @@
 name: uni_asset
 description: "A new Flutter project."
+
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -30,13 +31,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  image_picker: ^1.1.2
 
   # QR code generation
   qr_flutter: ^4.1.0
 
   # QR code scanning
   qr_code_scanner: ^1.0.0
-
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -68,6 +69,13 @@ flutter:
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
+
+  assets:
+    - assets/images/profile.jpg
+    - assets/images/profile.jpg
+    - assets/images/devices/laptop_front.jpg
+    - assets/images/devices/laptop_back.jpeg
+    - assets/images/devices/laptop_side.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

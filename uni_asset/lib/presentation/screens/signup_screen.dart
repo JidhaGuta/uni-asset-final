@@ -1,58 +1,42 @@
 import 'package:flutter/material.dart';
-import 'signup_screen.dart';
-import 'home_screen.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignupScreen> createState() => _SignupScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignupScreenState extends State<SignupScreen> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _studentIdController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
   bool _isLoading = false;
   bool _obscurePassword = true;
 
-  void _login() async {
+  void _signup() async {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() => _isLoading = true);
 
-    // Simulate login delay
+    // Mock delay to simulate API call
     await Future.delayed(const Duration(seconds: 2));
 
-    final id = _studentIdController.text.trim();
-    final password = _passwordController.text.trim();
-
-    // Mock test credentials
-    if (id == 'JU1234' && password == '1234') {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Login Successful'),
-          backgroundColor: Colors.green.shade600,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const HomeScreen()),
-      );
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Invalid ID or Password'),
-          backgroundColor: Colors.red.shade600,
-          behavior: SnackBarBehavior.floating,
-        ),
-      );
-    }
+    // TODO: Integrate with real backend later
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: const Text('Signup successful! Please login.'),
+        backgroundColor: Colors.green.shade600,
+        behavior: SnackBarBehavior.floating,
+      ),
+    );
 
     setState(() => _isLoading = false);
+
+    Navigator.pop(context); // go back to login
   }
 
   @override
@@ -64,27 +48,53 @@ class _LoginScreenState extends State<LoginScreen> {
           padding: const EdgeInsets.all(24.0),
           child: Column(
             children: [
+              const SizedBox(height: 20),
+
+              // Back button and title
+              Row(
+                children: [
+                  IconButton(
+                    onPressed: () => Navigator.pop(context),
+                    icon: Icon(
+                      Icons.arrow_back_ios_new_rounded,
+                      color: Colors.grey.shade700,
+                    ),
+                    padding: EdgeInsets.zero,
+                    constraints: const BoxConstraints(),
+                  ),
+                  const SizedBox(width: 16),
+                  const Text(
+                    'Create Account',
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black87,
+                    ),
+                  ),
+                ],
+              ),
+
               const SizedBox(height: 40),
 
-              // Welcome section with icon
+              // Header section with icon
               Column(
                 children: [
                   Container(
                     width: 80,
                     height: 80,
                     decoration: BoxDecoration(
-                      color: Colors.blue.shade50,
+                      color: Colors.purple.shade50,
                       shape: BoxShape.circle,
                     ),
                     child: Icon(
-                      Icons.person_outline,
+                      Icons.person_add_alt_1_outlined,
                       size: 40,
-                      color: Colors.blue.shade700,
+                      color: Colors.purple.shade700,
                     ),
                   ),
                   const SizedBox(height: 24),
                   const Text(
-                    'Welcome Back!',
+                    'Join UniAsset',
                     style: TextStyle(
                       fontSize: 28,
                       fontWeight: FontWeight.bold,
@@ -93,7 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Sign in to your UniAsset account',
+                    'Create your student account',
                     style: TextStyle(fontSize: 16, color: Colors.grey.shade600),
                   ),
                 ],
@@ -101,7 +111,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 48),
 
-              // Login form
+              // Signup form
               Container(
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
@@ -127,6 +137,43 @@ class _LoginScreenState extends State<LoginScreen> {
                           labelText: 'Student ID',
                           labelStyle: TextStyle(color: Colors.grey.shade600),
                           prefixIcon: Icon(
+                            Icons.badge_outlined,
+                            color: Colors.grey.shade600,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.grey.shade300),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.grey.shade300),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Colors.purple.shade500,
+                              width: 2,
+                            ),
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey.shade50,
+                        ),
+                        validator:
+                            (value) =>
+                                value!.isEmpty
+                                    ? 'Please enter your Student ID'
+                                    : null,
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Name field
+                      TextFormField(
+                        controller: _nameController,
+                        style: const TextStyle(fontSize: 16),
+                        decoration: InputDecoration(
+                          labelText: 'Full Name',
+                          labelStyle: TextStyle(color: Colors.grey.shade600),
+                          prefixIcon: Icon(
                             Icons.person_outlined,
                             color: Colors.grey.shade600,
                           ),
@@ -141,7 +188,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(
-                              color: Colors.blue.shade500,
+                              color: Colors.purple.shade500,
                               width: 2,
                             ),
                           ),
@@ -151,8 +198,50 @@ class _LoginScreenState extends State<LoginScreen> {
                         validator:
                             (value) =>
                                 value!.isEmpty
-                                    ? 'Please enter your Student ID'
+                                    ? 'Please enter your name'
                                     : null,
+                      ),
+                      const SizedBox(height: 20),
+
+                      // Email field
+                      TextFormField(
+                        controller: _emailController,
+                        style: const TextStyle(fontSize: 16),
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          labelText: 'Email Address',
+                          labelStyle: TextStyle(color: Colors.grey.shade600),
+                          prefixIcon: Icon(
+                            Icons.email_outlined,
+                            color: Colors.grey.shade600,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.grey.shade300),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.grey.shade300),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Colors.purple.shade500,
+                              width: 2,
+                            ),
+                          ),
+                          filled: true,
+                          fillColor: Colors.grey.shade50,
+                        ),
+                        validator: (value) {
+                          if (value!.isEmpty) {
+                            return 'Please enter your email';
+                          }
+                          if (!value.contains('@')) {
+                            return 'Please enter a valid email';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 20),
 
@@ -192,7 +281,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(
-                              color: Colors.blue.shade500,
+                              color: Colors.purple.shade500,
                               width: 2,
                             ),
                           ),
@@ -201,38 +290,33 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                         validator:
                             (value) =>
-                                value!.isEmpty
-                                    ? 'Please enter your password'
+                                value!.length < 4
+                                    ? 'Password must be at least 4 characters'
                                     : null,
                       ),
                       const SizedBox(height: 8),
 
-                      // Forgot password
+                      // Password requirement hint
                       Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () {
-                            // Add forgot password functionality
-                          },
-                          child: Text(
-                            'Forgot Password?',
-                            style: TextStyle(
-                              color: Colors.blue.shade700,
-                              fontWeight: FontWeight.w500,
-                            ),
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Password must be at least 4 characters',
+                          style: TextStyle(
+                            color: Colors.grey.shade500,
+                            fontSize: 12,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 16),
+                      const SizedBox(height: 24),
 
-                      // Login button
+                      // Signup button
                       SizedBox(
                         width: double.infinity,
                         height: 54,
                         child: ElevatedButton(
-                          onPressed: _isLoading ? null : _login,
+                          onPressed: _isLoading ? null : _signup,
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blue.shade600,
+                            backgroundColor: Colors.purple.shade600,
                             foregroundColor: Colors.white,
                             elevation: 0,
                             shape: RoundedRectangleBorder(
@@ -251,7 +335,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     ),
                                   )
                                   : const Text(
-                                    'Login',
+                                    'Create Account',
                                     style: TextStyle(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w600,
@@ -266,32 +350,25 @@ class _LoginScreenState extends State<LoginScreen> {
 
               const SizedBox(height: 32),
 
-              // Sign up section
+              // Login navigation
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Don't have an account?",
+                    "Already have an account?",
                     style: TextStyle(color: Colors.grey.shade600),
                   ),
                   const SizedBox(width: 4),
                   TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SignupScreen(),
-                        ),
-                      );
-                    },
+                    onPressed: () => Navigator.pop(context),
                     style: TextButton.styleFrom(
                       padding: EdgeInsets.zero,
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
                     child: Text(
-                      'Sign up',
+                      'Sign in',
                       style: TextStyle(
-                        color: Colors.blue.shade700,
+                        color: Colors.purple.shade700,
                         fontWeight: FontWeight.w600,
                         fontSize: 14,
                       ),
